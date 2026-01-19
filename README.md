@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>看護師国試！合格ドリル</title>
+    <title>母性看護学・特訓ドリル</title>
     <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #ff8fab;
-            --secondary-color: #fb6f92;
-            --bg-color: #ffe5ec;
+            --primary-color: #ffb3c1;
+            --secondary-color: #ff4d6d;
+            --bg-color: #fff0f3;
             --white: #ffffff;
             --correct: #4cc9f0;
             --wrong: #f72585;
+            --accent: #ff85a1;
         }
 
         body {
@@ -23,43 +24,47 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #333;
+            color: #444;
         }
 
         #app {
             background: var(--white);
-            width: 90%;
-            max-width: 400px;
-            border-radius: 30px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 92%;
+            max-width: 420px;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(255, 77, 109, 0.15);
             text-align: center;
+            border: 4px solid var(--primary-color);
         }
 
-        h1 { color: var(--secondary-color); font-size: 1.5rem; margin-bottom: 10px; }
+        h1 { color: var(--secondary-color); font-size: 1.4rem; margin-bottom: 5px; }
+        .sub-title { font-size: 0.8rem; color: var(--accent); margin-bottom: 15px; }
 
         .progress-bar {
-            height: 10px;
-            background: #eee;
-            border-radius: 5px;
+            height: 12px;
+            background: #ffe5ec;
+            border-radius: 10px;
             margin-bottom: 20px;
             overflow: hidden;
         }
 
         #progress {
             height: 100%;
-            background: var(--primary-color);
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.4s ease;
         }
-
-        .question-card { margin-bottom: 20px; }
 
         .question-text {
             font-size: 1.1rem;
-            line-height: 1.6;
+            line-height: 1.5;
             margin-bottom: 20px;
-            font-weight: bold;
+            text-align: left;
+            background: #fffafa;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid var(--secondary-color);
         }
 
         .options {
@@ -69,32 +74,34 @@
 
         .option-btn {
             background: var(--white);
-            border: 3px solid var(--primary-color);
-            padding: 15px;
-            border-radius: 15px;
+            border: 2px solid #ffccd5;
+            padding: 14px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             font-size: 1rem;
             font-family: inherit;
+            color: #555;
         }
 
-        .option-btn:active { transform: scale(0.95); }
-        .option-btn.correct { background: var(--correct); color: white; border-color: var(--correct); }
-        .option-btn.wrong { background: var(--wrong); color: white; border-color: var(--wrong); }
+        .option-btn:hover { background-color: #fff5f7; }
+        .option-btn.correct { background: var(--correct) !important; color: white; border-color: var(--correct); }
+        .option-btn.wrong { background: var(--wrong) !important; color: white; border-color: var(--wrong); }
 
         #result-screen { display: none; }
-        .score { font-size: 2rem; color: var(--secondary-color); font-weight: bold; }
+        .score-val { font-size: 2.5rem; color: var(--secondary-color); margin: 10px 0; }
         
         .next-btn {
             margin-top: 20px;
             background: var(--secondary-color);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 15px 40px;
             border-radius: 50px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
             display: none;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
         }
     </style>
 </head>
@@ -102,72 +109,74 @@
 
 <div id="app">
     <div id="game-screen">
-        <h1>🏥 看護師国試ドリル</h1>
+        <h1>👶 母性看護学ドリル</h1>
+        <div class="sub-title">～ 国試対策・実習応援編 ～</div>
         <div class="progress-bar"><div id="progress"></div></div>
         
-        <div class="question-card">
-            <div id="question" class="question-text">読み込み中...</div>
-            <div id="options" class="options"></div>
-        </div>
-        <button id="next-btn" class="next-btn" onclick="nextQuestion()">次の問題へ ✨</button>
+        <div id="question" class="question-text">読み込み中...</div>
+        <div id="options" class="options"></div>
+        
+        <button id="next-btn" class="next-btn" onclick="nextQuestion()">次へ進む 🐾</button>
     </div>
 
     <div id="result-screen">
-        <h1>おつかれさまでした！🌸</h1>
-        <p class="score" id="final-score"></p>
-        <p id="result-message"></p>
-        <button class="next-btn" style="display:inline-block" onclick="location.reload()">もう一度挑戦する</button>
+        <h1>実習もお疲れさま！🌸</h1>
+        <p class="score-val" id="final-score"></p>
+        <p id="result-message" style="line-height:1.6"></p>
+        <button class="next-btn" style="display:inline-block" onclick="location.reload()">もう一度解く</button>
     </div>
 </div>
 
 <script>
-    // 問題データ（ここを増やすだけで問題が追加できます）
     const quizData = [
         {
-            q: "日本の令和4年（2022年）における合計特殊出生率は？",
-            a: ["1.26", "1.30", "1.42", "1.57"],
-            correct: 0
+            q: "正常な妊娠経過において、レオポルド触診法で胎位、胎向を確認できる時期として最も適切なのはどれか？",
+            a: ["妊娠12週以降", "妊娠16週以降", "妊娠20週以降", "妊娠28週以降"],
+            correct: 3
         },
         {
-            q: "チアノーゼの際、血液中で増加しているのはどれ？",
-            a: ["酸化ヘモグロビン", "還元ヘモグロビン", "血小板", "白血球"],
+            q: "母子保健法において、妊娠した者が届け出ることによって交付されるのはどれか？",
+            a: ["出産育児一時金", "母子健康手帳", "児童手当", "育児休業給付金"],
             correct: 1
         },
         {
-            q: "成人の静止期における1回換気量の標準値はどれ？",
-            a: ["約150mL", "約300mL", "約500mL", "約1,000mL"],
+            q: "レオポルド触診法で、胎児の背中が母体の左側にある場合、胎向はどれか？",
+            a: ["第1胎向", "第2胎向", "縦産式", "横産式"],
+            correct: 0
+        },
+        {
+            q: "産褥3日の褥婦。子宮底の高さはどこにあるのが正常か？",
+            a: ["臍上1横指", "臍下1～2横指", "臍下3横指（臍と恥骨結合の中間）", "恥骨結合上縁"],
             correct: 2
         },
         {
-            q: "法律上、看護師の定義が定められているのは？",
-            a: ["保健師助産師看護師法", "医療法", "看護師法", "医師法"],
-            correct: 0
+            q: "母体保護法で規定されているのはどれか？",
+            a: ["産前産後の休業", "不妊手術", "出生届の提出", "乳幼児健診"],
+            correct: 1
         }
     ];
 
     let currentIdx = 0;
     let score = 0;
 
-    const qElement = document.getElementById('question');
-    const optionsElement = document.getElementById('options');
-    const nextBtn = document.getElementById('next-btn');
-    const progress = document.getElementById('progress');
-
     function loadQuestion() {
         const data = quizData[currentIdx];
-        qElement.innerText = data.q;
-        optionsElement.innerHTML = '';
-        nextBtn.style.display = 'none';
+        document.getElementById('question').innerText = `Q${currentIdx + 1}: ${data.q}`;
+        const opts = document.getElementById('options');
+        opts.innerHTML = '';
+        document.getElementById('next-btn').style.display = 'none';
         
-        // 進捗バーの更新
-        progress.style.width = `${(currentIdx / quizData.length) * 100}%`;
+        document.getElementById('progress').style.width = `${(currentIdx / quizData.length) * 100}%`;
 
         data.a.forEach((ans, i) => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             btn.innerText = ans;
-            btn.onclick = () => checkAnswer(i, btn);
-            optionsElement.appendChild(btn);
+            btn.onclick = () => {
+                if(document.getElementById('next-btn').style.display === 'inline-block') return;
+                checkAnswer(i, btn);
+            };
+            opts.appendChild(btn);
         });
     }
 
@@ -175,20 +184,14 @@
         const correct = quizData[currentIdx].correct;
         const allBtns = document.querySelectorAll('.option-btn');
         
-        // 全ボタンを無効化
-        allBtns.forEach(b => b.disabled = true);
-
         if (selected === correct) {
             btn.classList.add('correct');
-            btn.innerText += " ⭕";
             score++;
         } else {
             btn.classList.add('wrong');
-            btn.innerText += " ❌";
-            allBtns[correct].classList.add('correct'); // 正解を表示
+            allBtns[correct].classList.add('correct');
         }
-        
-        nextBtn.style.display = 'inline-block';
+        document.getElementById('next-btn').style.display = 'inline-block';
     }
 
     function nextQuestion() {
@@ -202,16 +205,14 @@
 
     function showResult() {
         document.getElementById('game-screen').style.display = 'none';
-        const rs = document.getElementById('result-screen');
-        rs.style.display = 'block';
-        document.getElementById('final-score').innerText = `${quizData.length}問中 ${score}問正解！`;
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
         
-        let msg = "この調子で国試まで走り抜けよう！🔥";
-        if (score === quizData.length) msg = "満点！あなたは天才看護学生！🌸";
+        let msg = "母性の基礎はバッチリ！実習中もこの知識が役立ちます。";
+        if (score === quizData.length) msg = "完璧です！✨ この調子で国試まで突っ走りましょう！🌸";
         document.getElementById('result-message').innerText = msg;
     }
 
-    // 開始
     loadQuestion();
 </script>
 
